@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:padding="@dimen/folder_padding" >
+
+    <ImageView
+        android:id="@+id/iv_folder_image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_folder_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/folder_title_marging_bottom"
+        android:background="@color/gray"
+        android:gravity="center"
+        android:padding="@dimen/folder_title_paddig"
+        android:singleLine="true"
+        tools:ignore="SelectableText" />
+
+</FrameLayout>

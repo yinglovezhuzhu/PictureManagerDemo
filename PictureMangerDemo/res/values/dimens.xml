@@ -1,0 +1,9 @@
+<resources>
+    <!-- 文字大小 -->
+	<dimen name="title_text_size">18sp</dimen>
+	
+	<dimen name="folder_padding">3dip</dimen>
+	<dimen name="folder_title_paddig">3dip</dimen>
+	<dimen name="folder_title_marging_bottom">10dip</dimen>
+	
+</resources>
