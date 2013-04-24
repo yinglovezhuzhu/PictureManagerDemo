@@ -1,6 +1,9 @@
 package com.example.picturemanagerdemo.entity;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
+
+import android.graphics.Bitmap;
 
 /**
  * ÕºœÒ µÃÂ¿‡
@@ -27,6 +30,9 @@ public class Image implements Serializable {
 	private int height;
 	private int state;
 	private boolean flag;
+	
+	public WeakReference<Bitmap> pic;
+	
 	public String getId() {
 		return id;
 	}

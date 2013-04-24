@@ -66,21 +66,25 @@ public class ImageListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LogUtil.w(ImageListAdapter.class.getSimpleName(), "position" + position + "=>>>" + parent.getChildCount());
-				ImageView imageView = null;
+		ViewHoder viewHoder = null;
 		if(null == convertView) {
-			imageView = new ImageView(mContext);
+			viewHoder = new ViewHoder();
+			convertView = View.inflate(mContext, R.layout.item_image_list, null);
+			viewHoder.image = (ImageView) convertView.findViewById(R.id.iv_image);
 			int columnWidth = ImageApplication.mScreenWidth / NUM_OF_COLUMN;
-			imageView.setScaleType(ScaleType.CENTER_CROP);
-			imageView.setLayoutParams(new AbsListView.LayoutParams(columnWidth, columnWidth));
-			convertView = imageView;
-			convertView.setTag(imageView);
+			convertView.setLayoutParams(new AbsListView.LayoutParams(columnWidth, columnWidth));
+			convertView.setTag(viewHoder);
 		} else {
-			imageView = (ImageView) convertView.getTag();
+			viewHoder = (ViewHoder) convertView.getTag();
 		}
-		imageView.setImageResource(R.drawable.ic_launcher);
+		viewHoder.image.setTag(position);
+		viewHoder.image.setImageResource(R.drawable.ic_launcher);
 		Image tmp = getItem(position);
-		new ImageLoaderTask(imageView, NUM_OF_COLUMN).execute(tmp);
+		new ImageLoaderTask(position, viewHoder.image, NUM_OF_COLUMN).execute(tmp);
 		return convertView;
+	}
+	
+	private class ViewHoder {
+		ImageView image;
 	}
 }

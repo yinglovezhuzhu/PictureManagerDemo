@@ -32,8 +32,8 @@
         <activity android:name=".ImageListActivity" 
             android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity 
-            android:name=".ImageViewActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
+            android:name=".ImageViewActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
 </manifest>

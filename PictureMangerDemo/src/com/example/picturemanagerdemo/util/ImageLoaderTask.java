@@ -14,10 +14,13 @@ public class ImageLoaderTask extends AsyncTask<Image, Void, Bitmap> {
 	
 	private int mColumns = 4;
 	
+	private int mId = 0;
+	
 
-	public ImageLoaderTask(ImageView imageView, int columns) {
+	public ImageLoaderTask(int id, ImageView imageView, int columns) {
 		mImageViewReference = new WeakReference<ImageView>(imageView);
 		this.mColumns = columns;
+		this.mId = id;
 	}
 
 	@Override
@@ -34,7 +37,9 @@ public class ImageLoaderTask extends AsyncTask<Image, Void, Bitmap> {
 		if (mImageViewReference != null) {
 			ImageView imageView = mImageViewReference.get();
 			if (imageView != null && bitmap != null) {
-				imageView.setImageBitmap(bitmap);
+				if((Integer) imageView.getTag() == this.mId) {
+					imageView.setImageBitmap(bitmap);
+				}
 			}
 		}
 	}

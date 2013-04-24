@@ -92,6 +92,7 @@ public class ImageListActivity extends Activity implements AdapterView.OnItemCli
 			long id) {
 		Intent intent = new Intent(ImageListActivity.this, ImageViewActivity.class);
 		intent.putExtra("image_info", mAdapter.getItem(position));
+		intent.putExtra("image_index", position);
 		startActivity(intent);
 	}
 
@@ -130,7 +131,7 @@ public class ImageListActivity extends Activity implements AdapterView.OnItemCli
 					}).show();
 					break;
 				case 1:
-					// TODO 上传照片操作，并把本地照片的状态改为已上传
+					// TODO 涓婁紶鐓х墖鎿嶄綔锛屽苟鎶婃湰鍦扮収鐗囩殑鐘舵�鏀逛负宸蹭笂浼�
 					List<Image> images = new ArrayList<Image>();
 					images.add(mAdapter.getItem(position));
 					ImageDatabaseUtil.setUploadState(ImageListActivity.this, images, ImageDatabaseHelper.STATE_UPLOADED);

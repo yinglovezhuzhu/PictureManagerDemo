@@ -78,7 +78,8 @@ public class ImageFolderAdapter extends BaseAdapter {
 			viewHoder = (ViewHolder) convertView.getTag();
 		}
 		Image folder = (Image) getItem(position);
-		new ImageLoaderTask(viewHoder.image, NUM_OF_COLUMN).execute(folder);
+		viewHoder.image.setTag(position);
+		new ImageLoaderTask(position, viewHoder.image, NUM_OF_COLUMN).execute(folder);
 		viewHoder.title.setText(folder.getBucketDisplayName());
 		return convertView;
 	}
