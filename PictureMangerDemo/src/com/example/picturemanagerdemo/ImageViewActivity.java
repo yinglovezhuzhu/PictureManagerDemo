@@ -70,31 +70,31 @@ public class ImageViewActivity extends Activity {
 	
 	private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
 		
-//		private int mmLastPosition = 0;
+		private int mmLastPosition = 0;
 		
 		@Override
 		public void onPageSelected(int position) {
-//			LogUtil.w(tag, "Page " + position + " is selected++++++++++>>>>LastPosition" + mmLastPosition);
-//			if(mmLastPosition < position) {
-//				if(mmLastPosition > 0 && mImages.get(mmLastPosition - 1).pic != null) {
-//					if(mImages.get(mmLastPosition - 1).pic.get() != null) {
-//						mImages.get(mmLastPosition - 1).pic.get().recycle();
-//					}
-//				}
-//				if(position < mImages.size() - 1) {
-//					new BitmapLoad(position + 1,  (ImageView) mViews.get(position + 1), 1).execute(mImages.get(position + 1));
-//				}
-//			} else {
-//				if(mmLastPosition < mImages.size() - 1 && mImages.get(mmLastPosition + 1).pic != null) {
-//					if(mImages.get(mmLastPosition + 1).pic.get() != null) {
-//						mImages.get(mmLastPosition + 1).pic.get().recycle();
-//					}
-//				}
-//				if(position > 0) {
-//					new BitmapLoad(position - 1,  (ImageView) mViews.get(position - 1), 1).execute(mImages.get(position - 1));
-//				}
-//			}
-//			mmLastPosition = position;
+			LogUtil.w(tag, "Page " + position + " is selected++++++++++>>>>LastPosition" + mmLastPosition);
+			if(mmLastPosition < position) {
+				if(mmLastPosition > 0 && mImages.get(mmLastPosition - 1).pic != null) {
+					if(mImages.get(mmLastPosition - 1).pic.get() != null) {
+						mImages.get(mmLastPosition - 1).pic.get().recycle();
+					}
+				}
+				if(position < mImages.size() - 1) {
+					new BitmapLoad(position + 1,  (ImageView) mViews.get(position + 1), 1).execute(mImages.get(position + 1));
+				}
+			} else {
+				if(mmLastPosition < mImages.size() - 1 && mImages.get(mmLastPosition + 1).pic != null) {
+					if(mImages.get(mmLastPosition + 1).pic.get() != null) {
+						mImages.get(mmLastPosition + 1).pic.get().recycle();
+					}
+				}
+				if(position > 0) {
+					new BitmapLoad(position - 1,  (ImageView) mViews.get(position - 1), 1).execute(mImages.get(position - 1));
+				}
+			}
+			mmLastPosition = position;
 			
 			mAdapter.notifyDataSetChanged();
 		}
