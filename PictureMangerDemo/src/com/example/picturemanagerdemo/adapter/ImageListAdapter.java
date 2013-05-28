@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 import com.example.picturemanagerdemo.ImageApplication;
 import com.example.picturemanagerdemo.R;
 import com.example.picturemanagerdemo.entity.Image;
 import com.example.picturemanagerdemo.util.ImageLoaderTask;
-import com.example.picturemanagerdemo.util.LogUtil;
 
 public class ImageListAdapter extends BaseAdapter {
 	

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class ImageFolderActivity extends Activity implements AdapterView.OnItemC
 		mGridView.setOnItemClickListener(this);
 		mGridView.setOnItemLongClickListener(this);
 		mGridView.setNumColumns(2);
-		ImageDatabaseUtil.refreshData(this);//本地数据库与系统图片数据库同步操作
+		ImageDatabaseUtil.refreshData(this);//鏈湴鏁版嵁搴撲笌绯荤粺鍥剧墖鏁版嵁搴撳悓姝ユ搷浣�
 		
 		mFolderAdapter.addAll(ImageDatabaseUtil.getFolders(this));
 		

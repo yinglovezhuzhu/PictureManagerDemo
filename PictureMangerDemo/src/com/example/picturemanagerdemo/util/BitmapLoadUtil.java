@@ -27,4 +27,9 @@ public class BitmapLoadUtil {
 		options.inSampleSize = 2;
 		return BitmapFactory.decodeFile(image.getData(), options);
 	}
+
+	public static Bitmap loadPhota(Image image) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		return BitmapFactory.decodeFile(image.getData(), options);
+	}
 }

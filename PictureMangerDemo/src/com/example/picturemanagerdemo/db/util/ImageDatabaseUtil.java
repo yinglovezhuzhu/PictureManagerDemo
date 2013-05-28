@@ -21,7 +21,7 @@ public class ImageDatabaseUtil {
 	private static String tag = ImageDatabaseUtil.class.getSimpleName();
 
 	/**
-	 * 刷新本地图片数据库，与系统图片数据库进行更新，如果这里用时较长，给以加载框提示
+	 * 鍒锋柊鏈湴鍥剧墖鏁版嵁搴擄紝涓庣郴缁熷浘鐗囨暟鎹簱杩涜鏇存柊锛屽鏋滆繖閲岀敤鏃惰緝闀匡紝缁欎互鍔犺浇妗嗘彁绀�
 	 * @param context
 	 */
 	public static void refreshData(Context context) {
@@ -82,7 +82,7 @@ public class ImageDatabaseUtil {
 		values.put("flag", ImageDatabaseHelper.FLAG_REFRESHED);
 		try {
 			int culumn = db.update("images", values, "_id = ?", new String [] {id, });
-			LogUtil.e(tag, "Update success =====>>> id = " + id);
+//			LogUtil.e(tag, "Update success =====>>> id = " + id);
 			return culumn > 0;
 		} catch (SQLiteException ex){
 			ex.printStackTrace();
@@ -91,7 +91,7 @@ public class ImageDatabaseUtil {
 	}
 	
 	/**
-	 * 用group by语句可以找出所有相册目录，并且可以得到目录下某一张图片
+	 * 鐢╣roup by璇彞鍙互鎵惧嚭鎵�湁鐩稿唽鐩綍锛屽苟涓斿彲浠ュ緱鍒扮洰褰曚笅鏌愪竴寮犲浘鐗�
 	 * @param context
 	 * @return
 	 */
@@ -106,7 +106,7 @@ public class ImageDatabaseUtil {
 	}
 	
 	/**
-	 * 获取某个目录下的所有图片信息
+	 * 鑾峰彇鏌愪釜鐩綍涓嬬殑鎵�湁鍥剧墖淇℃伅
 	 * @param context
 	 * @param folderId
 	 * @return
@@ -122,7 +122,7 @@ public class ImageDatabaseUtil {
 	}
 	
 	/**
-	 * 更新照片的上传状态
+	 * 鏇存柊鐓х墖鐨勪笂浼犵姸鎬�
 	 * @param context
 	 * @param id
 	 * @param state
@@ -142,7 +142,7 @@ public class ImageDatabaseUtil {
 	}
 	
 	/**
-	 * 查找图片结果集
+	 * 鏌ユ壘鍥剧墖缁撴灉闆�
 	 * @param cursor
 	 * @return
 	 */

@@ -3,39 +3,34 @@ package com.example.picturemanagerdemo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.spec.PSource;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.util.LruCache;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.example.picturemanagerdemo.adapter.ViewPageAdapter;
+import com.example.picturemanagerdemo.adapter.GalleryAdapter;
 import com.example.picturemanagerdemo.db.util.ImageDatabaseUtil;
 import com.example.picturemanagerdemo.entity.Image;
-import com.example.picturemanagerdemo.util.BitmapLoad;
-import com.example.picturemanagerdemo.util.ImageLoaderTask;
+import com.example.picturemanagerdemo.util.BitmapLoadUtil;
+import com.example.picturemanagerdemo.util.LoadBitmapTask;
 import com.example.picturemanagerdemo.util.LogUtil;
+import com.example.picturemanagerdemo.widget.ZoomableGallery;
 
 public class ImageViewActivity extends Activity {
 	
 	private String tag = ImageViewActivity.class.getSimpleName();
 	
-	private ViewPager mViewPage = null;
-	
-	private List<View> mViews = new ArrayList<View>();
-	
-	private ViewPageAdapter mAdapter;
-	
 	private List<Image> mImages = new ArrayList<Image>();
 	
+	private ZoomableGallery mGallery = null;
+	
+	private GalleryAdapter mAdapter;
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,69 +41,87 @@ public class ImageViewActivity extends Activity {
 		int imageIndex = intent.getIntExtra("image_index", 0);
 		setTitle(image.getDisplayName());
 		
-		mViewPage = (ViewPager) findViewById(R.id.view_pager);
+		mGallery = (ZoomableGallery) findViewById(R.id.gallery);
+		mGallery.setSpacing(20);
+		mAdapter = new GalleryAdapter(this);
+		mGallery.setAdapter(mAdapter);
 		
-		mViewPage.setOnPageChangeListener(mPageChangeListener);
 		
 		mImages.addAll(ImageDatabaseUtil.getImageAsFolder(this, image.getBucketId()));
 		
 		for (int i = 0; i < mImages.size(); i++) {
-			ImageView iv = new ImageView(this);
-			iv.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			iv.setScaleType(ScaleType.CENTER_INSIDE);
-			iv.setBackgroundColor(getResources().getColor(R.color.white));
-			iv.setTag(i);
 			if(i > imageIndex - 2 && i < imageIndex + 2) {
-				new BitmapLoad(i, iv, 1).execute(mImages.get(i));
+				mAdapter.add(BitmapLoadUtil.loadBitmapFromFile(mImages.get(i), 1));
+			} else {
+				mAdapter.add(null);
 			}
-			mViews.add(iv);
 		}
-		mAdapter = new ViewPageAdapter(this, mViews);
-		mViewPage.setAdapter(mAdapter);
-		mViewPage.setCurrentItem(imageIndex);
+		mGallery.setOnItemSelectedListener(mOnItemSelectedListener);
+		mAdapter.notifyDataSetChanged();
+		mGallery.setSelection(imageIndex);
 	}
 	
-	private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
-		
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		return false;
+	}
+	
+	private OnItemSelectedListener mOnItemSelectedListener = new OnItemSelectedListener() {
+
 		private int mmLastPosition = 0;
-		
 		@Override
-		public void onPageSelected(int position) {
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			LogUtil.w(tag, "Page " + position + " is selected++++++++++>>>>LastPosition" + mmLastPosition);
 			if(mmLastPosition < position) {
-				if(mmLastPosition > 0 && mImages.get(mmLastPosition - 1).pic != null) {
-					if(mImages.get(mmLastPosition - 1).pic.get() != null) {
-						mImages.get(mmLastPosition - 1).pic.get().recycle();
-					}
+				if(mmLastPosition > 0  && mAdapter.getItem(mmLastPosition - 1) != null) {
+					mAdapter.getItem(mmLastPosition - 1).recycle();
+					mAdapter.set(mmLastPosition - 1, null);
 				}
 				if(position < mImages.size() - 1) {
-					new BitmapLoad(position + 1,  (ImageView) mViews.get(position + 1), 1).execute(mImages.get(position + 1));
+					new LoadBitmapTask(mAdapter, position + 1, 1).execute(mImages.get(position + 1));
 				}
-			} else {
-				if(mmLastPosition < mImages.size() - 1 && mImages.get(mmLastPosition + 1).pic != null) {
-					if(mImages.get(mmLastPosition + 1).pic.get() != null) {
-						mImages.get(mmLastPosition + 1).pic.get().recycle();
-					}
+			} else if(mmLastPosition > position){
+				if(mmLastPosition < mImages.size() - 1 && mAdapter.getItem(mmLastPosition) != null) {
+					mAdapter.getItem(mmLastPosition + 1).recycle();
+					mAdapter.set(mmLastPosition + 1, null);
 				}
 				if(position > 0) {
-					new BitmapLoad(position - 1,  (ImageView) mViews.get(position - 1), 1).execute(mImages.get(position - 1));
+					new LoadBitmapTask(mAdapter, position - 1, 1).execute(mImages.get(position - 1));
 				}
 			}
 			mmLastPosition = position;
 			
-			mAdapter.notifyDataSetChanged();
 		}
-		
+
 		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void onPageScrollStateChanged(int state) {
-			// TODO Auto-generated method stub
-			
+		public void onNothingSelected(AdapterView<?> parent) {
+			Log.w("AAAAAAAAAA", "Nothing selected");
 		}
 	};
+	
+	
+	
+//	public Bitmap loadPhoto(String path){
+//		Options options = new Options();
+//		
+//		//以最省内存的方式读取本地资源的图片
+//		options.inPreferredConfig = Bitmap.Config.RGB_565;   
+//		options.inPurgeable = true;  
+//		options.inInputShareable = true;  
+//					
+//		Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+//		mCache.put(path, bitmap);
+//		return bitmap;
+//	}
+////		再加一个图片额度，超过就释放它
+//	private int mCacheCapacity = 1;
+//	
+//	private Map<String, Object> mCache = Collections.synchronizedMap(
+//			new LinkedHashMap<String, Object>() {
+//				@Override
+//				protected boolean removeEldestEntry(java.util.Map.Entry<String, Object> eldest) {
+//					return size() > mCacheCapacity;
+//				}
+//	});
+	
 }
